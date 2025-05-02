@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ExerciseSet, ExerciseSetList, ExerciseSetListAPI } from '@app/interfaces/exercise-set';
 import { ExerciseSetsService } from './services/exercise-sets.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,6 +14,7 @@ export class DiaryComponent implements OnInit {
     exerciseList!: ExerciseSetList;
 
     private exerciseSetsService = inject(ExerciseSetsService);
+    private router = inject(Router);
 
     ngOnInit(): void {
         this.exerciseSetsService
@@ -25,10 +27,8 @@ export class DiaryComponent implements OnInit {
             .refreshList()
             .subscribe((dataApi: ExerciseSetListAPI) => (this.exerciseList = dataApi.items));
     }
-    addExercise(newSet: ExerciseSet) {
-        this.exerciseSetsService
-            .addNewItem(newSet)
-            .subscribe((_) => this.newList());
+    addExercise() {
+        this.router.navigate(['/home/new-template']);
     }
     deleteItem(id: string | number) {
         this.exerciseSetsService.deleteItem(id).subscribe(() => {
